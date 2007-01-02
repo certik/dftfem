@@ -1,13 +1,21 @@
 #summary Installation instructions
 
-= Introduction =
+== Download sources ==
 
-Add your content here.
+{{{
+svn checkout https://dftfem.googlecode.com/svn/trunk/ dftfem --username ondrej.certik
+}}}
 
+== Install contrib libraries ==
 
-= Details =
+{{{
+cd contrib
+./make
+}}}
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Install dftfem ==
+
+{{{
+cd src
+make
+}}}
