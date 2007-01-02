@@ -2,7 +2,7 @@ all:
 	./setpaths
 	cd solver-petsc && make
 	cd mesh && make
-	cd assembly && make
+	cd assembly && make -j2
 
 clean:
 	cd solver-petsc && make distclean
