@@ -57,7 +57,7 @@ int showinfo(EPS eps)
   print(" -----------------------------------------------------------------");
   E( EPSGetIterationNumber(eps, &its) );
   E( PetscPrintf(PETSC_COMM_WORLD," Number of iterations of the method: %d\n",its) );
-  E( EPSGetNumberLinearIterations(eps, &lits) );
+  //E( EPSGetNumberLinearIterations(eps, &lits) );
   E( PetscPrintf(PETSC_COMM_WORLD," Number of linear iterations of the method: %d\n",lits) );
   E( EPSGetType(eps,&type) );
   E( PetscPrintf(PETSC_COMM_WORLD," Solution method: %s\n\n",type) );
