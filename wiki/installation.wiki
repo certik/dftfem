@@ -13,7 +13,7 @@ cd contrib
 ./make
 }}}
 
-This will install arpack, petsc, slepc and libmesh in the `contrib/lib` directory.
+This will install `arpack`, `petsc`, `slepc` and `libmesh` in the `contrib/lib` directory.
 
 == Install dftfem ==
 
