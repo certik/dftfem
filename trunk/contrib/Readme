@@ -1,0 +1,12 @@
+1) create ~/libs, cd ~/libs
+2) cp -r /contrib/patches .
+3) Run /contrib/downloadpackages, or manually get the packages and put them to
+archives/
+
+4) /contrib/buildarpack
+
+5) /contrib/buildpetsc
+
+6) /contrib/buildslepc
+
+7) /contrib/buildlibmesh

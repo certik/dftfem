@@ -1,0 +1,11 @@
+--- PARPACK/UTIL/MPI/Makefile.orig	2006-03-22 17:49:30.009780080 +0100
++++ PARPACK/UTIL/MPI/Makefile	2006-03-22 17:50:04.977464184 +0100
+@@ -42,7 +42,7 @@
+ .SUFFIXES:      .o .F .f
+ 
+ .f.o:
+-	$(FC) $(FFLAGS) -c $<
++	$(PFC) $(FFLAGS) -c $<
+ #
+ #  make the library containing both single and double precision
+ #

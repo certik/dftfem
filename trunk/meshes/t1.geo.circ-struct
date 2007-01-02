@@ -1,0 +1,35 @@
+R=1; //radius
+n=40; //number of boxes along the perimeter
+N=20; //number of boxes along the radius (counted from the surface)
+
+phi=Pi/2;
+nphi=n*phi/(2*Pi);
+An=2*Pi/n; //is't not exact, but sufficient
+P=An+1;
+R1=R/(P^N);
+lt=2*Pi*R1/n;
+
+Point(1) = {R1,0,0,lt};
+
+Point(6) = {R,0,0,lt};
+Line(1) = {1,6};
+Transfinite Line {1} = N Using Progression P;
+
+Extrude Line {1, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi} {
+  Layers { {nphi}, {1} }; Recombine;
+};
+Extrude Line {2, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi} {
+  Layers { {nphi}, {1} }; Recombine;
+};
+Extrude Line {6, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi} {
+  Layers { {nphi}, {1} }; Recombine;
+};
+Extrude Line {10, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi} {
+  Layers { {nphi}, {1} }; Recombine;
+};
+Line Loop(18) = {3,7,11,15};
+Plane Surface(19) = {18};
+Recombine Surface {19};
+
+Physical Surface(100) = {5,9,13,17,19};
+Physical Line(1) = {4,8,12,16};

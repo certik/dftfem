@@ -1,0 +1,21 @@
+#! /bin/bash
+#edit patches/patch1 and change the "home" variable to point to this directory
+
+tar xzf archives/arpack96.tar.gz
+tar xzf archives/parpack96.tar.gz
+tar xzf archives/patch.tar.gz
+tar xzf archives/ppatch.tar.gz
+cd ARPACK
+cp ARMAKES/ARmake.MPI-SP2 ARmake.inc
+rm PARPACK/SRC/MPI/mpif.h
+rm PARPACK/UTIL/MPI/mpif.h
+rm PARPACK/EXAMPLES/MPI/mpif.h
+
+patch -p0 < ../patches/patch1
+patch -p0 < ../patches/patch2
+patch -p0 < ../patches/patch3
+
+make all
+
+ln -s libarpack_SP2.a libarpack.a
+ln -s parpack_MPI-SP2.a libparpack.a

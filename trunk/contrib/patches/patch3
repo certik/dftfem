@@ -1,0 +1,11 @@
+--- PARPACK/SRC/MPI/Makefile.orig	2006-03-22 17:50:44.165506696 +0100
++++ PARPACK/SRC/MPI/Makefile	2006-03-22 17:50:56.398646976 +0100
+@@ -45,7 +45,7 @@
+ 		pzneupd.o pzngets.o pzgetv0.o pdznorm2.o pzlarnv.o
+ 
+ .f.o:
+-	$(FC) $(FFLAGS) -c $<
++	$(PFC) $(FFLAGS) -c $<
+ 
+ all: single complex double complex16
+ 

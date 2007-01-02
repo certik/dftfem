@@ -1,0 +1,15 @@
+#! /bin/bash
+
+cd archives
+
+wget http://www.caam.rice.edu/software/ARPACK/SRC/arpack96.tar.gz
+wget http://www.caam.rice.edu/software/ARPACK/SRC/parpack96.tar.gz
+wget http://www.caam.rice.edu/software/ARPACK/SRC/patch.tar.gz
+wget http://www.caam.rice.edu/software/ARPACK/SRC/ppatch.tar.gz
+
+wget ftp://ftp.mcs.anl.gov/pub/petsc/petsc-lite-2.3.1.tar.gz
+wget http://www.grycap.upv.es/slepc/download/distrib/slepc-2.3.1.tgz
+
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/libmesh co libmesh
+tar cjf libmesh.tar.bz2 libmesh
+rm -r libmesh

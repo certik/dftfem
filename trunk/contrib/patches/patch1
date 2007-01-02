@@ -1,0 +1,34 @@
+--- ARmake.inc.orig	2006-03-22 17:39:48.842130992 +0100
++++ ARmake.inc	2006-03-22 17:41:03.274815504 +0100
+@@ -27,7 +27,7 @@
+ #  The complete path to the top level of ARPACK directory, usually
+ #  $(HOME)/ARPACK
+ #
+-home          = $(HOME)/ARPACK
++home          = $(HOME)/libs/ARPACK
+ #
+ #  The platform identifier to suffix to the end of library names
+ #
+@@ -105,11 +105,11 @@
+ #  Various compilation programs and flags.
+ #  You need to make sure these are correct for your system.
+ #
+-FC      = xlf
++FC      = f77
+ FFLAGS	= -O2
+ 
+ # Set the parallel fortran compiler
+-PFC      = mpxlf
++PFC      = mpif77
+ PFFLAGS	= -O2 
+ 
+ LDFLAGS = 
+@@ -133,7 +133,7 @@
+ LN	 = ln
+ LNFLAGS	 = -s
+ 
+-MAKE	 = /bin/make
++MAKE	 = /usr/bin/make
+ 
+ MKDIR	 = mkdir
+ MDFLAGS	 = -p
