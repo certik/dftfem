@@ -1,0 +1,455 @@
+%&csplain
+
+\input eplain   
+\input epsf
+
+%\voffset=-1.5cm
+%\hoffset=-1.5cm
+%\advance \vsize by 3cm
+%\advance \hsize by 3cm
+
+\magnification\magstep1
+%\chyph
+\csaccents
+%\raggedbottom
+
+\newcount\eqcount
+\def\incno#1{\global\advance\eqcount1\definexref{#1}{\the\eqcount}{eq}}
+\def\no#1{\incno{#1}\eqno{(\the\eqcount)}}
+\def\nno#1{\incno{#1}&{(\the\eqcount)}}
+\def\rno#1{(\refn{#1})}
+
+
+\def\mydots{\leaders\hbox{$\mkern1.5mu.\mkern1.5mu$}\hfill}
+\def\tocsecentry#1#2#3{\line{\bf#2 #1\thinspace\mydots#3}}
+\def\tocsubentry#1#2#3{\line{\quad#2 #1\thinspace\mydots#3}}
+
+\newcount\secno
+\newcount\subno
+\def\secskip{\vskip 18pt plus 6pt minus 6pt}
+
+\font\titlefont=\fontname\tenbf\space scaled\magstep2
+\font\subfont=\fontname\tenbf\space scaled\magstep1
+\font\subsubfont=\fontname\tenbf\space scaled\magstep0
+\font\progfont=cstt8
+\def\title#1{\centerline{\titlefont #1}\bigskip}
+\def\sec#1\par{\advance\secno by1\subno=0\secskip\goodbreak\noindent%
+{\subfont \the\secno. #1}%
+\writenumberedtocentry{sec}{#1}{\the\secno.}\medskip\nobreak\noindent}
+\def\sub#1\par{\advance\subno by 1\medskip\goodbreak\noindent%
+{\edef\n{\the\secno.\the\subno}{\subsubfont\n\ #1}%
+\writenumberedtocentry{sub}{#1}{\n}}\par\nobreak\noindent}
+
+\newcount\figno
+\def\dref#1{\global\advance\figno by 1\definexref{#1}{\the\figno}{}\the\figno}
+
+\font\twelverm=csr12
+\def\d{{\rm d}}
+
+\def\psfig#1#2#3{\medskip\noindent\epsfxsize=\hsize\epsfbox{#1}
+\centerline{Fig. \dref{#2}: #3}\medskip}
+
+\def\y#1{(#1 let)}
+\def\degrees{^\circ}
+\def\p#1#2{ {\partial#1\over\partial#2} }
+\def\pp#1#2{ {\partial^2#1\over\partial#2^2} }
+
+%end of macro definitions
+
+\title{DFT and FEM}
+
+\centerline{Ondøej Èertík}
+\centerline{April, 2006}
+
+\vfill\eject
+
+\title{Contents}
+
+\readtocfile
+
+\sec{Schr\"odinger Equation}
+
+$$\left(-{\hbar^2\over2m}\nabla^2 + V\right)\psi=E\psi\,.$$
+
+\sub{Weak Formulation}
+
+We multiply both sides by a test function $v$
+$$-\left({\hbar^2\over2m}\nabla^2\psi\right)v=(E-V)\psi v\,,$$
+and integrate over the whole volume we are interested in
+$$\int-\left({\hbar^2\over2m}\nabla^2\psi\right)v\,\d V=\int(E-V)\psi v\,\d
+V\,,\no{1}$$
+and using the vector identity
+$$-\left(\nabla^2\psi)\right)v=\nabla \psi\cdot
+\nabla v - \nabla\cdot\left((\nabla \psi)v\right),$$
+we rewrite the left hand side of \rno{1}
+$$\int{\hbar^2\over2m}\nabla\psi\cdot\nabla v\,\d V=\int(E-V)\psi v\,\d
+V+\int{\hbar^2\over2m}\nabla\cdot\left((\nabla \psi)v\right)\,\d V\,,$$
+now we apply Gauss Theorem
+$$\int{\hbar^2\over2m}\nabla\psi\cdot\nabla v\,\d V=\int(E-V)\psi v\,\d
+V+\oint{\hbar^2\over2m}(\nabla \psi)v\cdot{\bf n}\,\d S\,,$$
+and rewriting $\nabla\psi\cdot{\bf n}\equiv{\d\psi\over\d n}$
+$$\int{\hbar^2\over2m}\nabla\psi\cdot\nabla v\,\d V=\int(E-V)\psi v\,\d
+V+\oint{\hbar^2\over2m}{\d\psi\over\d n}v\,\d S\,,\no{w}$$
+which is the weak formulation. The problem reads: find a function $\psi$ such
+that \rno{w} holds for every $v$.
+
+\sub{Weak Formulation}
+
+We arrived at the weak formulation:
+$$\int{\hbar^2\over2m}\nabla\psi\cdot\nabla v\,\d V+ \int vV\psi\,\d V
+=
+\int E\psi v\,\d V + \oint{\hbar^2\over2m}{\d\psi\over\d n}v\,\d S\,.$$
+
+\sub{Linear Equations}
+
+Now we substitute $\phi_i$ for $v$ and expand $\psi=\sum q_j\phi_j$
+$$\left(\int{\hbar^2\over2m}\nabla\phi_j\cdot\nabla\phi_i\,\d V+
+\int\phi_iV\phi_j\,\d V\right)q_j
+=
+\left(\int E\phi_j\phi_i\,\d V\right)q_j
++\oint{\hbar^2\over2m}{\d\psi\over\d n}\phi_i\,\d S\,,$$
+which can be written in a matrix form
+$$\left(K_{ij}+V_{ij}\right)q_j=EM_{ij}q_j+F_i\,,$$
+where
+$$\eqalign{
+V_{ij}&=\int\phi_iV\phi_j\,\d V\,,\cr
+M_{ij}&=\int\phi_i\phi_j\,\d V\,,\cr
+K_{ij}&={\hbar^2\over2m}\int\nabla\phi_i\cdot\nabla\phi_j\,\d V\,,\cr
+F_i&={\hbar^2\over2m}\oint{\d\psi\over\d n}\phi_i\,\d S\,.\cr
+}$$
+Usually we set $F_i=0$.
+
+\sub{Finite Elements}
+
+We decompose the domain into elements, so we need to compute the integrals over
+one finite element:
+$$
+K_{ij}^{E}=\int{\hbar^2\over2m}\nabla\phi_j\cdot\nabla\phi_i\,\d V^{E}\approx
+\sum_{q=0}^{N_q-1}{\hbar^2\over2m}\,\nabla\phi_i(x_q)\cdot\nabla\phi_j(x_q)\,
+w_q|\det J(\hat x_q)|\,.
+$$
+The surface integrals are computed accordingly.
+
+%\sub{Boundary Conditions}
+%
+%The Neumann boundary condition is already taken into
+%account in \rno{m} - it's the surface integral containing
+%${\d u\over\d n}$, so we compute this integral over every element, where 
+%${\d u\over\d n}\neq0$.
+%
+%The Dirichlet boundary condition is imposed by adding the following equation to
+%\rno{d} for every element we want to prescribe the value of $u$:
+%$$P\int\phi_i\phi_j\,\d Su_j=P\int u_0\,\phi_i\,\d S\,,$$
+%where $P$ is some big number (penalty) and $u_0$ is the value of $u$ on the
+%boundary. Then the matrices are (on this element) as follows:
+%$$\eqalign{
+%K_{ij}&=\int\lambda\nabla\phi_j\cdot\nabla\phi_i\,\d V+
+%	P\int\phi_i\phi_j\,\d S\,,\cr
+%F_i&=\int f\phi_i\,\d V+\oint\lambda{\d u\over\d n}\phi_i\,\d S+
+%	P\int u_0\,\phi_i\,\d S\,.\cr
+%}$$
+%
+%The second possibility to impose the Dirichlet boundary condition is to set the
+%$i$ row in RHS to $u_0 P$ and the element $i,i$ in the stiffness matrix to
+%$P$.
+%
+%The first way is more general and more precise because we don't bother about
+%any nodes, we just need the value of $u_0(x,y,z)$ on the whole boundary (and
+%take into account only the $u_0$'s in the Gauss points). The second way is
+%better if we just want to set the value of $u$ in some particular nodes.
+%
+
+\sec{Atomic units (au)}
+
+$\hbar=1$, mass of the electron $m=1$, charge of the electron $e=1$,
+Bohr radius
+$$a_0={4\pi\epsilon_0\hbar^2\over me^2}={\hbar\over mc\alpha}=1\,,$$
+from which follows $4\pi\epsilon_0=1$ and $c\alpha=1$.
+Hydrogen atom Hamiltonian in SI units:
+$$H=-{\hbar^2\over2m}\nabla^2-{1\over4\pi\epsilon_0}{e^2\over r}$$
+and au units:
+$$H=-{1\over2}\nabla^2-{1\over r}\,.$$
+The energy spectrum for hydrogen is
+$$E_n=-{\hbar^2\over ma_0^2}{1\over2n^2}=-{1\over2n^2}\,.$$
+Energy is measured in Hartrees, one Hartree is
+$$E_h={\hbar^2\over ma_0^2}=mc^2\alpha^2=1=27.211\rm\,eV\,.$$
+The fine-structure constant is dimensionless:
+$$\alpha={1\over137.036}\,,$$
+so the speed of light is $c={1\over\alpha}=137.036$.
+
+
+\sec{Potential}
+
+$$V=V_{ion} + V_H + V_{XC}\,,$$
+where for 1 atom in the origin: 
+$$V_{ion}=V_{loc}(r) + {\hat V}_{nonlocal}\,.$$
+$V_{loc}(r)$, $V_H({\bf x})$ and $V_{XC}({\bf x})$ are scalar potentials,
+${\hat V}_{nonlocal}$ is an operator. We can thus write:
+$$V=V_{loc} + V_H + V_{XC} + {\hat V}_{nonlocal}\,.$$
+Now let's look at the operator ${\hat V}_{nonlocal}$:
+$$({\hat V}_{nonlocal}\psi_i)({\bf x})=\sum_l V_l {2l+1\over
+4\pi}\int P_l({\bf\hat r\cdot\hat n})\psi_i(r{\bf\hat n})\,\d\Omega\,,$$
+where 
+$$\eqalign{
+r&=|{\bf x}|\,,\cr
+{\bf\hat r}&={{\bf x}\over|{\bf x}|}={{\bf x}\over r}\cr
+}$$
+and the integration is over a unit sphere, using the unit
+vector ${\bf\hat n}$ as the integration variable. It
+has these cartesian components as usual:
+$${\bf\hat n}=(\sin\theta\cos\phi,\,\sin\theta\sin\phi,\,\cos\theta)\,,$$
+in other words:
+$$\int\d\Omega\, P_l({\bf\hat r\cdot\hat n})\psi_i(r{\bf\hat n})=
+\int_0^{2\pi}\!\!\!\d\phi\int_0^{\pi}\!\!\d\theta\,
+P_l({\bf\hat r\cdot\hat n})\psi_i(r{\bf\hat n})\sin^2\theta=$$
+$$
+\int_0^{2\pi}\!\!\!\!\!\!\!\!\d\phi\!\!\int_0^{\pi}\!\!\!\!\!\!\d\theta
+P_l({x\over r}\sin\theta\cos\phi+{y\over r}\sin\theta\sin\phi+
+{z\over r}\cos\theta)
+\psi_i(r\sin\theta\cos\phi,r\sin\theta\sin\phi,r\cos\theta)\sin^2\theta\,.$$
+Everything is known: $\phi_i(x,y,z)$ is a basis function, $P_l(x)$ is a
+Legendre polynomial (defined for $0\le x\le 1$), first few are:
+$$\eqalign{
+P_0(x)&=1\,,\cr
+P_1(x)&=x\,,\cr
+P_2(x)&={1\over2}(3x^2-1)\,,\cr
+P_3(x)&={1\over2}(5x^3-3x)\,,\cr
+P_4(x)&={1\over8}(35x^4-30x^2+3)\,,\cr
+P_5(x)&={1\over8}(63x^5-70x^3+15x)\,,\cr
+P_6(x)&={1\over16}(231x^6-315x^4+105x^2-5)\,,\cr
+}$$
+
+\sec{Program}
+
+\verbatim
+for (int l=0;l<1;l+=1)
+{
+  Real I=0.0;
+  for (double dphi=2*pi/3,phi=0; phi<2*pi; phi+=dphi)
+  for (double dtheta=pi/3, theta=0; theta<pi; theta+=dtheta)
+    I+=P(l,(x*sin(theta)*cos(phi)+y*sin(theta)*sin(phi)+
+              z*cos(theta))/r)
+        *phi_xyz(i,r*sin(theta)*cos(phi),r*sin(theta)*sin(phi),
+              r*cos(theta)) 
+        *pow(sin(theta),2)*dtheta*dphi;
+  Vxpsi+=getVl(l,r)*I*(2*l+1)/(4*pi);
+}
+|endverbatim
+\bigskip
+
+The {\tt phi\_xyz(x,y,z)} function returns the $\phi_i({\bf x})=
+\phi_i(x,y,z)$. The shape function is in fact defined on the reference element
+as $\tilde\phi_i(\vec\xi)=\tilde\phi_i(\xi,\eta,\zeta)$ and 
+$$\phi_i({\bf x})=\tilde\phi_i(\vec\xi({\bf x}))\,.$$
+The dependence
+$$\vec\xi=\vec\xi({\bf x})$$
+has to be computed numerically using a Newton method.
+
+%global coordinate system
+%structure coordinate system
+%overall coordinate system
+
+%vs
+
+%local coordinate system
+%natural coordinate system
+%reference plane/element
+
+%isoparametric mapping
+
+\sec{Test examples}
+
+It is important to test the installation, both the assembly and the solvers.
+For this reason there are several preprogrammed 3D examples.
+
+Sometimes the spectrum depends on the geometry parameter $a$ (a size of a
+box or a sphere). We suggest to compute in atomic units and first set $a=1$, later
+to try other values of $a$ to check the correct dependence of the solution on
+$a$.
+
+\sub{Infinite square potential well}
+
+We have a box of a side $a$ and a scalar potential:
+$$V({\bf x})=\cases{0 &for ${\bf x}$ in the box,\cr
+             \infty &otherwise.\cr}$$
+Analytic solution gives the following spectrum:
+$$E_{n_1n_2n_3}={{\hbar^2 \pi^2\over2ma^2}(n_1^2+n_2^2+n_3^2)}\,,
+\qquad n_1,n_2,n_3=1,2,3,\dots\,,$$
+so a few lowest energies are (in atomic units):
+$$\eqalign{
+E_{111}&={3\pi^2\over2a^2}={14.804\over a^2}\,,\cr
+E_{112}=E_{121}=E_{211}&={6\pi^2\over2a^2}={29.609\over a^2}\,,\cr
+E_{122}=E_{212}=E_{221}&={9\pi^2\over2a^2}={44.413\over a^2}\,,\cr
+E_{113}=E_{131}=E_{311}&={11\pi^2\over2a^2}={54.283\over a^2}\,,\cr
+E_{222}&={12\pi^2\over2a^2}={59.218\over a^2}\,,\cr
+E_{123}=E_{132}=E_{213}=E_{231}=E_{312}=E_{321}&={14\pi^2\over2a^2}={69.087\over a^2}\,,\cr
+E_{223}=E_{232}=E_{322}&={17\pi^2\over2a^2}={83.892\over a^2}\,,\cr
+E_{114}=E_{141}=E_{411}&={18\pi^2\over2a^2}={88.826\over a^2}\,,\cr
+E_{133}=E_{313}=E_{331}&={19\pi^2\over2a^2}={93.761\over a^2}\,,\cr
+}$$
+
+A sample result on a hexahedral box mesh with 68921 nodes
+and 64000 elements, $a=1$:
+\medskip
+\noindent14.812018\hfil\break
+29.654619 29.654499 29.654420\hfil\break
+44.497216 44.497001 44.496770\hfil\break
+54.493911 54.493777 54.493637\hfil\break
+59.339523\hfil\break
+69.336572 69.336349 69.336243 69.336161 69.336105 69.335893\hfil\break
+84.178904 84.178856 84.178715\hfil\break
+89.483205 89.482994 89.482875\hfil\break
+94.175499 94.175389 94.175115\hfil\break
+
+
+\sub{Infinite spherical potential well}
+
+We have a sphere of a radius $a$ and a spherically symmetric potential:
+$$V(r)=\cases{0 &for $r\le a$,\cr
+             \infty &for $r > a$.\cr}$$
+Analytic solution gives the following spectrum:
+$$E_{nl}={\hbar^2 u_{nl}^2\over2ma^2}\,,\qquad n=1,2,3,\dots;
+\quad l=0,1,2,\dots\,,$$
+where $u_{nl}$ is the $n$th zero of the spherical Bessel function $j_l$:
+$$\eqalign{
+u_{10}&=3.142\,,\cr
+u_{11}&=4.493\,,\cr
+u_{12}&=5.763\,,\cr
+u_{20}&=6.283\,,\cr
+u_{13}&=6.988\,,\cr
+u_{21}&=7.725\,,\cr
+}$$
+so we finally have (in atomic units):
+$$\eqalign{
+E_{10}&={ 4.936\over a^2}\,,\cr
+E_{11}&={10.094\over a^2}\,,\cr
+E_{12}&={16.606\over a^2}\,,\cr
+E_{20}&={19.738\over a^2}\,,\cr
+E_{13}&={24.416\over a^2}\,,\cr
+E_{21}&={29.838\over a^2}\,.\cr
+}$$
+A degeneracy of the energy level $E_{nl}$ is $2l+1$.
+
+A sample result on a tetrahedral spherical mesh with 159192 nodes
+and 982363 elements, $a=1$:
+\medskip
+\noindent4.939043\hfil\break
+10.114084 10.114074 10.114044\hfill\break
+16.660649 16.660463 16.660140 16.660083 16.660015\hfill\break
+19.812318\hfill\break
+24.528641 24.528246 24.528119 24.527966 24.527687 24.527631 24.527461\hfill\break
+30.007858 30.007381 30.006918\hfill\break
+33.69104 33.69050 33.69005 33.68987 33.68953 33.68938 33.68913 33.68904
+33.68880\hfill\break
+41.682994\hfill\break
+ 
+\sub{Spherical linear harmonic oscillator}
+
+We have a sphere of a radius $a$ and a spherically symmetric potential:
+$$V(r)=\cases{{1\over2}m\omega^2r^2 &for $r\le a$,\cr
+             \infty &for $r > a$.\cr}$$
+Analytic solution (in the limit $a\to\infty$) gives the following spectrum:
+$$E_{nl}=\hbar\omega\left(2n+l+{3\over2}\right)\,,\qquad n,l=0,1,2,3,\dots\,,$$
+so a few lowest energies are (in atomic units and $\omega=1$):
+$$\eqalign{
+E_{00}&={3\over2}=1.5\,,\cr
+E_{01}&=1+{3\over2}=2.5\,,\cr
+E_{02}=E_{10}&=2+{3\over2}=3.5\,,\cr
+E_{03}=E_{11}&=3+{3\over2}=4.5\,,\cr
+E_{04}=E_{12}=E_{20}&=4+{3\over2}=5.5\,,\cr
+}$$
+A degeneracy of the energy level $E_{nl}$ is $2l+1$, so if we denote
+$\Lambda=2n+l$, the spectrum can also (equivalently) be written as
+$$E_{\Lambda}=\hbar\omega\left(\Lambda+{3\over2}\right)\,,\qquad \Lambda=
+0,1,2,3,\dots$$
+and the degeneracy of $E_{\Lambda}$ is ${1\over2}(\Lambda+1)(\Lambda+2)$,
+a first few values are $1, 3, 6, 10, 15, \dots$
+
+When computing numerically, we need to choose $a$ sufficiently large, and
+create the mesh sufficiently dense around the origin to get correct results.
+A sample result on a tetrahedral spherical mesh with 159149 nodes
+and 982010 elements, $a=15$:
+
+\medskip
+\noindent1.537237\hfill\break
+2.597473 2.593177 2.590595\hfill\break
+3.680867 3.664781 3.663415 3.655095 3.653997 3.643068\hfill\break
+4.82900 4.81065 4.79727 4.75939 4.75506 4.74968 4.74468 4.74315 
+4.74157 4.73509\hfill\break
+5.89124 5.87400 5.86998 5.86629 5.84858 5.84773 5.83902 5.83518
+5.83029 5.82834 \dots\hfill\break
+
+\sub{DFT computation of Si atom}
+
+We have an Si atom in the origin, with the following pseudopotential:
+$$V=V_{loc} + V_H + V_{XC} + {\hat V}_{nonlocal}\,,$$
+$$({\hat V}_{nonlocal}\psi_i)({\bf x})=\sum_{l=0}^2 V_l {2l+1\over
+4\pi}\int P_l({\bf\hat r\cdot\hat n})\psi_i(r{\bf\hat n})\,\d\Omega\,,$$
+where $U(r)=V_{loc} + V_H + V_{XC}$ is given and is treated as a 
+usual scalar potential, $V_0(r)$, $V_1(r)$ and $V_2(r)$ is also given,
+see fig. \refn{pseudofig} for the plot of all these potentials in
+atomic units. "rho" is the charge density from another DFT program.
+\psfig{pseudopot.eps}{pseudofig}
+{Scalar potential U and non-local potentials $V_l$}
+I used a box (side $a=10$) divided into 30x30x30 equal hexahedrons (27000
+elements, 29791 nodes), the atom is in the middle of the box, ie. there are at
+least 5 atomic units of elements in every direction. Assembling took 10 minutes
+or 66 minutes (depends if I only take into account the basis function on the
+current element or not), solving depends on the number of eigenvalues, but
+usually from 10 to 30 seconds. It was run on amd64 computer, which is around
+5.5 faster than my 900Mhz Pentium III at home.
+
+There weren't any differences when I used a
+symmetric or general solver (!). I shifted the spectrum by $+10$. 
+
+Result -- first case (the second column is the correct energy from another DFT program):
+
+\verbatim
+9.263832    9.60510
+9.859375    9.84806016981541
+9.859634
+9.860282
+10.055438   10.027909219877655
+10.200252
+10.200332
+10.200356
+10.251075
+10.251122
+|endverbatim
+\bigskip
+Result -- second case:
+
+\verbatim
+9.263867
+9.855735
+9.858280
+9.859868
+10.056769
+10.199861
+10.200029
+10.200309
+10.250798
+10.250892
+|endverbatim
+\bigskip
+
+I also computed a case with ${\hat V}_{nonlocal}=0$, the assembling took 10s.
+Results:
+
+\verbatim
+9.267249
+9.860491
+9.860505
+9.860518
+10.056306
+10.200382
+10.200392
+10.200400
+10.251208
+10.251215
+|endverbatim
+\bigskip
+
+Differences are almost negligible. The mesh is probably too rough.
+
+\bye

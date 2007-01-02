@@ -1,0 +1,19 @@
+R=10; //radius
+n=30; //number of nodes on the radius.
+
+lt=R/n;
+phi=Pi/2;
+
+Point(1) = {0,0,0,lt};
+
+Point(2) = {R,0,0,lt};
+Line(1) = {1,2};
+
+Extrude Line {1, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi};
+Extrude Line {2, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi};
+Extrude Line {5, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi};
+Extrude Line {8, {0.0,0.0,1.0}, {0.0,0.0,0.0}, phi};
+Recombine Surface {4,7,10,13};
+
+Physical Surface(100) = {4,7,10,13};
+Physical Line(1) = {3,6,9,12};
