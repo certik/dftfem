@@ -13,6 +13,8 @@ cd contrib
 ./make
 }}}
 
+This will install arpack, petsc, slepc and libmesh.
+
 == Install dftfem ==
 
 {{{
