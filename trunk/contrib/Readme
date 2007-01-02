@@ -1,12 +1,12 @@
-1) create ~/libs, cd ~/libs
-2) cp -r /contrib/patches .
-3) Run /contrib/downloadpackages, or manually get the packages and put them to
-archives/
+The "archives" dir contains versions of packages which are tested with this
+project. They were downloaded using the "downloadpackages" script at that time.
 
-4) /contrib/buildarpack
+Build all the packages in this order:
 
-5) /contrib/buildpetsc
+./buildarpack
+./buildpetsc
+./buildslepc
+./buildlibmesh
 
-6) /contrib/buildslepc
-
-7) /contrib/buildlibmesh
+They will be installed in the "libs" directory. "Clean" script deletes this
+directory.
