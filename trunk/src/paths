@@ -1,3 +1,0 @@
-meshdir := ~/libs/libmesh
-PETSC_DIR=/home/ondra/libs/petsc-2.3.1-p12
-SLEPC_DIR=/home/ondra/libs/slepc-2.3.1
