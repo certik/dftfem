@@ -1,0 +1,4 @@
+./buildarpack
+./buildpetsc
+./buildslepc
+./buildlibmesh
