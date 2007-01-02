@@ -1,10 +1,11 @@
 cd libs
-export PETSC_DIR=`pwd`/petsc-2.3.2-p7
+export PETSC_DIR=`pwd`/petsc
 
 arpackdir=`pwd`/ARPACK
 
 tar xzf ../archives/slepc-2.3.2.tgz
-cd slepc-2.3.2
+mv slepc-2.3.2 slepc
+cd slepc
 export SLEPC_DIR=`pwd`
 config/configure.py --with-arpack-dir=$arpackdir --with-arpack-flags=-lparpack,-larpack
 make
