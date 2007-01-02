@@ -1,9 +1,9 @@
 cd libs
 
-export PETSC_DIR=`pwd`/petsc-2.3.2-p7
-export SLEPC_DIR=`pwd`/slepc-2.3.2
+export PETSC_DIR=`pwd`/petsc
+export SLEPC_DIR=`pwd`/slepc
 
-tar xjf archives/libmesh.tar.bz2
+tar xjf ../archives/libmesh.tar.bz2
 
 cd libmesh
 export PETSC_ARCH=linux

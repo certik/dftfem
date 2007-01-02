@@ -1,7 +1,8 @@
 mkdir -p libs
 cd libs
 tar xzf ../archives/petsc-lite-2.3.2.tar.gz
-cd petsc-2.3.2-p7
+mv petsc-2.3.2-p7 petsc
+cd petsc
 export PETSC_ARCH=linux
 export PETSC_DIR=`pwd`
 config/configure.py --with-cc=gcc --with-cxx=g++ --with-fc=g77 --with-mpi-dir=/usr/lib/mpich/ --with-debugging --with-shared 
