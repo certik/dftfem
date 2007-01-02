@@ -1,12 +1,12 @@
-The "archives" dir contains versions of packages which are tested with this
-project. They were downloaded using the "downloadpackages" script at that time.
+Because the installation of the contrib packages can be a little tricky, we
+wrote some scripts to compile them automatically.  The "archives" dir contains
+versions of packages which are tested with this project. They were downloaded
+using the "downloadpackages" script at that time.
 
-Build all the packages in this order:
+Build all the packages using:
 
-./buildarpack
-./buildpetsc
-./buildslepc
-./buildlibmesh
+./make
 
-They will be installed in the "libs" directory. "Clean" script deletes this
-directory.
+They will be installed in the "libs" directory. Clean everything using:
+
+./clean
