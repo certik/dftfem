@@ -1,0 +1,1 @@
+Solver for special type of matrices.
